@@ -1,9 +1,16 @@
 import { generateText } from "ai"
 import { google } from "@ai-sdk/google"
 
-
 require('dotenv').config();
-// console.log(process.env.GOOGLE_GENERATIVE_AI_API_KEY);
+
+/**
+ * In the enviroment variable file, you must to add the variable GOOGLE_GENERATIVE_AI_API_KEY and value of api key
+ * I am using the google api with Gemini
+ */
+
+if(process.env.GOOGLE_GENERATIVE_API_KEY == undefined){
+  process.env.GOOGLE_GENERATIVE_API_KEY = "AIz...XY9Q"
+}
 
 export async function GET(req: Request) {
 
@@ -11,7 +18,7 @@ export async function GET(req: Request) {
   const prompt = searchParams.get("prompt");
 
   const { text } = await generateText({
-    model: google("models/gemini-1.5-flash-latest"),
+    model: google("models/gemini-1.5-pro-latest"),
     prompt: prompt
   })
   return Response.json({ question:prompt,message: text });

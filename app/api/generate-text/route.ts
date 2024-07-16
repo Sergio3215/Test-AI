@@ -15,7 +15,7 @@ if(process.env.GOOGLE_GENERATIVE_API_KEY == undefined){
 export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
-  const prompt = searchParams.get("prompt");
+  const prompt:any = searchParams.get("prompt");
 
   const { text } = await generateText({
     model: google("models/gemini-1.5-pro-latest"),

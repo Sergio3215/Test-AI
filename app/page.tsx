@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
+import { marked } from "marked";
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -7,10 +8,10 @@ export default function Home() {
   const [pressButton, setPressButton] = useState(false);
 
   const sendPrompt = async () => {
-    let txt:any = output;
+    let txt: any = output;
     if (input != "") {
       txt.push({
-        user: "Tú:",
+        user: "Tú",
         msg: input
       });
       setOutput(txt);
@@ -19,8 +20,8 @@ export default function Home() {
       const res = await ftch.json();
 
       txt.push({
-        user: "Bot:",
-        msg: res.message
+        user: "Bot",
+        msg: marked.parse(res.message)
       });
     }
     else {
@@ -43,13 +44,15 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <div id="container--Layout" className="flex flex-col justify-between">
-          <div id="display--text">
+          <div id="container--display--text">
             {
               output.map((message: any) => {
                 return (
                   <>
-                    <div>{message.user}</div>
-                    <div id="message--display">{message.msg}</div>
+                    <div id="display--text" className={`flex flex-col ${message.user == "Tú" ? "items-end mr-4" : "items-start ml-4"}`}>
+                      <div>{message.user}</div>
+                      <div id="message--display" dangerouslySetInnerHTML={{ __html: message.msg }}></div>
+                    </div>
                   </>
                 )
               })
